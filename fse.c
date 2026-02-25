@@ -43,6 +43,8 @@ int8_t *readkey(char *prompt){
 
         printf("%s ", prompt);
 	fflush(stdout);
+
+	changeecho(false);
 	memset(buf, 0, 256);
 	read(0, buf, 255);
 	size = (uint8_t)strlen(buf);
@@ -53,9 +55,26 @@ int8_t *readkey(char *prompt){
 	p = (int8_t *)malloc(size);
 	assert(p);
 	strncpy((char *)p, buf, idx);
+	changeecho(true);
 
 	return p;
 }
+
+void changeecho (bool enable){
+	struct termios *t;
+
+	t = (struct termios *) malloc(sizeof(struct termios));
+	
+	tcgetattr(0, t);
+	if(enable)
+		t->c_cflag |= ECHO;
+ 	else
+		t->c_cflag &= ECHO;
+	
+	tcsetattr(0, 0, t);
+	return;
+}
+
 
 int main(int argc, char *argv[]){
 	char *infile, *outfile;

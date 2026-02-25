@@ -11,7 +11,10 @@
 #include <sys/random.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <termios.h>
+#include <stdbool.h>
 
+void changeecho(bool);
 int8_t *securerand(int16_t);
 int8_t *readkey(char *);
 int main (int, char**);
