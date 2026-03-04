@@ -13,9 +13,12 @@
 #include <sys/stat.h>
 #include <termios.h>
 #include <stdbool.h>
+#include "rc4.h"
+
 
 void changeecho(bool);
 int8_t *securerand(int16_t);
 int8_t *readkey(char *);
-int main (int, char**);
+void encryptfile(int, int, Arc4 *);
+
 
