@@ -158,6 +158,8 @@ int main(int argc, char *argv[]){
 	assert(padding);
 	s_write(outfd, padding, padsize);
 
+	encrypt_file(infd, outfd, rc);
+
 	close(infd);
 	close(outfd);
 	free(padsize8);
@@ -167,3 +169,5 @@ int main(int argc, char *argv[]){
 
 	return 0;
 }
+
+
