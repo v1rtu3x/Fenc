@@ -19,6 +19,7 @@
 void changeecho(bool);
 int8_t *securerand(int16_t);
 int8_t *readkey(char *);
-void encryptfile(int, int, Arc4 *);
+void encryptfile(int, int,uint16_t, Arc4 *);
+void s_write(int, const void *, size_t);
 
 

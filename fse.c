@@ -55,7 +55,7 @@ int8_t *readkey(char *prompt){
 
 	if (r <= 0) return 0;
 
-	len =strcspn(buf, "/n");
+	len =strcspn(buf, "\n");
 	buf[len] = 0;
 
 	p = (int8_t *)malloc(len + 1);
@@ -84,7 +84,7 @@ void changeecho (bool enable){
 void s_write(int file, const void *buf, size_t n){
 	const uint8_t *p = (const uint8_t *)buf;
 	while(n){
-		ssize_t w = write(fd, p, n);
+		ssize_t w = write(file, p, n);
 		if(w < 0){perror("write"); exit(1);}
 		p += (size_t)w;
 		n -= (size_t)w;
@@ -96,10 +96,9 @@ void encryptfile(int infd, int outfd, uint16_t padsize, Arc4 *rc){
 	ssize_t n;
 
 	while((n = read(infd, buf, sizeof(buf))) > 0){
-		rc4encrypt(rc, (int8 * buf), int16(n));
+		rc4encrypt(rc, (int8 *)buf, (int16_t)n);
 		s_write(outfd, buf, (size_t)n);
 		}
-	}
 	if (n < 0) perror("read");
 }
 
