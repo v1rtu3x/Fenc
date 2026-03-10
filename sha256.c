@@ -42,10 +42,6 @@ static const uint32_t K[64] = {
 	0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 };
 
-static void sha256_compress(uint32_t h[8], const uint8_t block[64]){
-	uint32_t W[64];
-}
-
 static uint32_t load_be32(const uint8_t p[4]){
 	return ((uint32_t)p[0] << 24) |
 	 	   ((uint32_t)p[1] << 16) | 
@@ -132,7 +128,7 @@ void sha256_init(s_sha256 *hs){
 }
 
 void sha256_update(s_sha256 *hs, const void *data, size_t len){
-	const uint8_t *data = (const uint8_t *)data;
+	const uint8_t *p = (const uint8_t *)data;
 
 	hs->total_len += len;
 
@@ -140,9 +136,9 @@ void sha256_update(s_sha256 *hs, const void *data, size_t len){
 		size_t take = 64 - hs->buf_len;
 		if(take > len) take = len;
 
-		memcpy(hs->buf + hs->buf_len, data, take);
+		memcpy(hs->buf + hs->buf_len, p, take);
 		hs->buf_len += take;
-		data += take;
+		p += take;
 		len -= take;
 
 		if(hs->buf_len == 64){

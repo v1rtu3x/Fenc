@@ -36,7 +36,7 @@ export Arc4 * rc4init(int8 *key, int16 size){
 }
 
 int8 rc4byte(Arc4 *p){
-	int16 tmp1, tmp2;
+	int16 tmp1;
 
 	p->i = (p->i + 1) % 256;
 	p->j = (p->j + p->s[p->i]) % 256;
@@ -48,21 +48,18 @@ int8 rc4byte(Arc4 *p){
 	tmp1 = (p->s[p->i] + p->s[p->j]) % 256;
 
 	p->k = p->s[tmp1];
+
+	return p->k;
 }
 
 export int8 * rc4encrypt(Arc4 *p, int8 *cleartext, int16 size){
-	int8 *ciphertext;
 	int16 x;
 
-	ciphertext = (int8 *)malloc(size+1);
-	if(!ciphertext)
-		assert_perror(errno);
-
-	for(x=0; x<size; x++) {
-		ciphertext[x] = cleartext[x] ^ rc4byte(p);
+	for (x = 0; x < size; x++) {
+		cleartext[x] ^= rc4byte(p);
 	}
 
-	return ciphertext;
+	return cleartext;
 }
 
 
